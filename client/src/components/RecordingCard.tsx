@@ -14,15 +14,15 @@ interface RecordingCardProps {
 
 const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) => {
   const { toast } = useToast();
-  
+
   // Ensure we're using the full path
   const fullPath = recording.audioUrl.startsWith('http') 
     ? recording.audioUrl 
     : `${window.location.origin}${recording.audioUrl}`;
-  
+
   // For debugging
   console.log('Audio path:', fullPath);
-  
+
   const shareRecording = () => {
     if (navigator.share) {
       navigator.share({
@@ -63,21 +63,28 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
           <h3 className="font-medium text-lg text-primary">{recording.question}</h3>
           <span className="text-sm text-neutral-600">{formattedDate}</span>
         </div>
-        
+
         <div className="flex items-center text-sm text-neutral-600 mb-4">
           <span className="mr-1">⏱️</span>
           <span>{formatTime(recording.duration)}</span>
         </div>
-        
+
         {/* Audio player */}
         <div className="mb-4">
           <audio 
             controls 
             className="w-full" 
             preload="metadata"
-            src={fullPath}
+            controlsList="nodownload"
+            onLoadStart={() => console.log('Audio loading started')}
+            onCanPlay={() => console.log('Audio can play')}
             onError={(e) => {
-              console.error('Audio error:', e);
+              const audio = e.currentTarget;
+              console.error('Audio error:', {
+                error: audio.error,
+                networkState: audio.networkState,
+                readyState: audio.readyState
+              });
               toast({
                 title: 'Lỗi phát âm thanh',
                 description: 'Không thể phát file âm thanh. Vui lòng thử lại.',
@@ -85,10 +92,14 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
               });
             }}
           >
+            <source src={fullPath} type="audio/mpeg" />
+            <source src={fullPath} type="audio/mp3" />
+            <source src={fullPath} type="audio/wav" />
+            <source src={fullPath} type="audio/webm" />
             Your browser does not support the audio element.
           </audio>
         </div>
-        
+
         {/* Action buttons */}
         <div className="flex justify-between">
           {/* Download button */}
@@ -99,7 +110,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
           >
             Tải xuống
           </a>
-          
+
           {/* Delete button */}
           <Button
             variant="ghost"
