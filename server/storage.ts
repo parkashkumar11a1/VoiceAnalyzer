@@ -98,8 +98,7 @@ export class DatabaseStorage implements IStorage {
   async getAllRecordings(): Promise<Recording[]> {
     return await db
       .select()
-      .from(recordings)
-      .orderBy(recordings.createdAt, "desc");
+      .from(recordings);
   }
 
   async getRecording(id: number): Promise<Recording | undefined> {

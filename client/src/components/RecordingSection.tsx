@@ -236,8 +236,8 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
                 onClick={toggleRecording}
                 className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all ${
                   isRecording 
-                    ? 'bg-yellow-500 hover:bg-yellow-600 animate-pulse' 
-                    : 'bg-red-500 hover:bg-red-600'
+                    ? 'bg-amber-500 hover:bg-amber-600 animate-pulse' 
+                    : 'bg-primary hover:bg-primary/80'
                 }`}
                 aria-label={isRecording ? 'Stop recording' : 'Start recording'}
               >
@@ -248,10 +248,10 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
             {/* Recording status */}
             <div className={`font-medium ${
               isRecording 
-                ? 'text-red-500' 
+                ? 'text-amber-500' 
                 : audioBlob 
-                  ? 'text-green-500' 
-                  : 'text-yellow-500'
+                  ? 'text-primary' 
+                  : 'text-neutral-600'
             }`}>
               {isRecording 
                 ? 'Đang ghi âm...' 

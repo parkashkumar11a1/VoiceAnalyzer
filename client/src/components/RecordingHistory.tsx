@@ -144,11 +144,11 @@ const RecordingHistory: React.FC<RecordingHistoryProps> = ({
               <div className="text-6xl text-neutral-300 flex justify-center mb-4">
                 <Mic className="h-24 w-24" />
               </div>
-              <h3 className="text-xl font-medium text-neutral-700 mb-2">Chưa có bản ghi âm nào</h3>
-              <p className="text-neutral-500 mb-6">Hãy tạo bản ghi âm đầu tiên của bạn bằng cách nhập câu hỏi và nhấn nút ghi âm.</p>
+              <h3 className="text-xl font-medium text-primary mb-2">Chưa có bản ghi âm nào</h3>
+              <p className="text-neutral-600 mb-6">Hãy tạo bản ghi âm đầu tiên của bạn bằng cách nhập câu hỏi và nhấn nút ghi âm.</p>
               <Button 
                 onClick={handleScrollToRecorder}
-                className="bg-primary-500 hover:bg-primary-700 text-white"
+                className="bg-primary hover:bg-primary/80 text-white"
               >
                 <Mic className="mr-2 h-4 w-4" /> Bắt đầu ghi âm
               </Button>
