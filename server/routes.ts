@@ -24,14 +24,42 @@ const upload = multer({
     },
     filename: (req, file, cb) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, `recording-${uniqueSuffix}.webm`);
+      
+      // Determine the proper extension based on mime type
+      let extension = 'webm'; // Default
+      
+      if (file.mimetype === 'audio/mp3' || file.mimetype === 'audio/mpeg') {
+        extension = 'mp3';
+      } else if (file.mimetype === 'audio/ogg') {
+        extension = 'ogg';
+      } else if (file.mimetype === 'audio/wav' || file.mimetype === 'audio/x-wav' || file.mimetype === 'audio/wave') {
+        extension = 'wav';
+      } else if (file.mimetype === 'audio/mp4') {
+        extension = 'm4a';
+      }
+      
+      cb(null, `recording-${uniqueSuffix}.${extension}`);
     }
   }),
   fileFilter: (req, file, cb) => {
-    // Accept only audio files
-    if (file.mimetype.startsWith('audio/')) {
+    // Accept common audio file types
+    const allowedMimeTypes = [
+      'audio/webm',
+      'audio/ogg',
+      'audio/mp3',
+      'audio/mp4',
+      'audio/mpeg',
+      'audio/wav',
+      'audio/x-wav',
+      'audio/wave'
+    ];
+    
+    // Also accept any audio type as fallback
+    if (allowedMimeTypes.includes(file.mimetype) || file.mimetype.startsWith('audio/')) {
+      console.log(`Accepting file with MIME type: ${file.mimetype}`);
       cb(null, true);
     } else {
+      console.log(`Rejecting file with MIME type: ${file.mimetype}`);
       cb(new Error('Only audio files are allowed'));
     }
   },

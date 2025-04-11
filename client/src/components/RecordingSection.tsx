@@ -37,9 +37,35 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
-      // Create MediaRecorder with WEBM_OPUS format
-      const options = { mimeType: 'audio/webm;codecs=opus' };
-      const mediaRecorder = new MediaRecorder(stream, options);
+      let mediaRecorder;
+      
+      // Try different MIME types based on browser support
+      const mimeTypes = [
+        'audio/webm;codecs=opus',
+        'audio/webm',
+        'audio/ogg;codecs=opus',
+        'audio/mp4',
+        ''  // Default
+      ];
+      
+      for (const mimeType of mimeTypes) {
+        try {
+          // Skip empty mime type or check if it's supported
+          if (!mimeType || MediaRecorder.isTypeSupported(mimeType)) {
+            const options = mimeType ? { mimeType } : undefined;
+            mediaRecorder = new MediaRecorder(stream, options);
+            console.log(`Using MIME type: ${mediaRecorder.mimeType}`);
+            break;
+          }
+        } catch (e) {
+          console.log(`MIME type ${mimeType} not supported, trying next...`);
+          continue;
+        }
+      }
+      
+      if (!mediaRecorder) {
+        throw new Error('No suitable MIME type found for recording');
+      }
       
       mediaRecorderRef.current = mediaRecorder;
       
@@ -50,15 +76,16 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
       };
       
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm;codecs=opus' });
+        // Use the same mime type as the recorder for the blob
+        const blob = new Blob(chunksRef.current, { type: mediaRecorder.mimeType });
         setAudioBlob(blob);
         
         // Stop all tracks from the stream
         stream.getTracks().forEach(track => track.stop());
       };
       
-      // Start recording
-      mediaRecorder.start();
+      // Make sure we get data frequently to avoid missing the last chunk
+      mediaRecorder.start(200); // Collect data every 200ms
       setIsRecording(true);
       setRecordingTime(0);
       
@@ -69,9 +96,15 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
       
     } catch (error) {
       console.error('Error accessing microphone:', error);
+      let errorMessage = 'Could not access microphone. Please check permissions.';
+      
+      if (error instanceof Error) {
+        errorMessage += ` Error: ${error.message}`;
+      }
+      
       toast({
-        title: 'Error',
-        description: 'Could not access microphone. Please check permissions.',
+        title: 'Lỗi truy cập microphone',
+        description: errorMessage,
         variant: 'destructive',
       });
     }

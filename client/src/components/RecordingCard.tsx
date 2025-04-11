@@ -24,6 +24,17 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
     const audio = new Audio(recording.audioUrl);
     audioRef.current = audio;
     
+    // Handle audio loading errors
+    audio.addEventListener('error', (e) => {
+      console.error('Audio loading error:', e);
+      toast({
+        title: 'Lỗi phát âm thanh',
+        description: 'Không thể tải file âm thanh. Trình duyệt có thể không hỗ trợ định dạng này.',
+        variant: 'destructive',
+      });
+      setIsPlaying(false);
+    });
+    
     audio.addEventListener('ended', () => {
       setIsPlaying(false);
       setCurrentTime(0);
@@ -31,6 +42,11 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
         clearInterval(progressIntervalRef.current);
         progressIntervalRef.current = null;
       }
+    });
+    
+    // Reset current time when audio is loaded
+    audio.addEventListener('loadedmetadata', () => {
+      setCurrentTime(0);
     });
     
     return () => {
@@ -44,7 +60,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [recording.audioUrl]);
+  }, [recording.audioUrl, toast]);
 
   const togglePlayback = () => {
     if (!audioRef.current) return;
@@ -59,8 +75,8 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
       audioRef.current.play().catch(error => {
         console.error('Error playing audio:', error);
         toast({
-          title: 'Error',
-          description: 'Could not play audio. Try again later.',
+          title: 'Lỗi phát âm thanh',
+          description: 'Không thể phát âm thanh. Trình duyệt có thể không hỗ trợ định dạng này hoặc âm thanh bị lỗi.',
           variant: 'destructive',
         });
       });

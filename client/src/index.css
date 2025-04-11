@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add animation for recording visualization */
+@keyframes wave {
+  0% {
+    height: 4px;
+  }
+  50% {
+    height: 16px;
+  }
+  100% {
+    height: 4px;
+  }
+}
+
+.wave-container[data-recording="true"] .wave-bar {
+  animation: wave 1.5s ease-in-out infinite;
+}
+
+.wave-container[data-recording="false"] .wave-bar {
+  animation: none;
+  height: 4px;
+}
+
 @layer base {
   * {
     @apply border-border;
