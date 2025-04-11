@@ -199,15 +199,15 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
     <section className="mb-10">
       <Card>
         <CardContent className="p-6">
-          <h2 className="text-xl font-medium mb-4 text-primary-700 font-heading">Tạo bản ghi âm mới</h2>
+          <h2 className="text-xl font-medium mb-4 text-primary font-heading">Tạo bản ghi âm mới</h2>
           
           <div className="mb-6">
-            <label htmlFor="question" className="block mb-2 text-neutral-700">Nhập câu hỏi của bạn:</label>
+            <label htmlFor="question" className="block mb-2 text-primary">Nhập câu hỏi của bạn:</label>
             <Textarea
               id="question"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              className="w-full p-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+              className="w-full p-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
               placeholder="Nhập câu hỏi của bạn tại đây..."
               rows={2}
             />
@@ -219,14 +219,14 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
               {Array.from({ length: 10 }).map((_, i) => (
                 <div 
                   key={i} 
-                  className="wave-bar inline-block w-1 mx-0.5 rounded-sm bg-primary-500 h-4"
+                  className="wave-bar inline-block w-1 mx-0.5 rounded-sm bg-primary h-4"
                   style={{ animationDelay: `${i * 0.1}s` }}
                 ></div>
               ))}
             </div>
             
             {/* Time indicator */}
-            <div className="text-lg mb-4 font-medium text-neutral-700">
+            <div className="text-lg mb-4 font-medium text-primary">
               {formatTime(recordingTime)}
             </div>
             
@@ -265,7 +265,7 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
               <Button
                 onClick={saveRecording}
                 disabled={!audioBlob || isSaving}
-                className="bg-primary-500 hover:bg-primary-700 text-white"
+                className="bg-primary hover:bg-primary/80 text-white"
               >
                 <Save className="mr-2 h-4 w-4" /> Lưu
               </Button>

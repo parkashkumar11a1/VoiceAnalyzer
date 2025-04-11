@@ -149,8 +149,8 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
     <Card>
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-medium text-lg text-neutral-800">{recording.question}</h3>
-          <span className="text-sm text-neutral-500">{formattedDate}</span>
+          <h3 className="font-medium text-lg text-primary">{recording.question}</h3>
+          <span className="text-sm text-neutral-600">{formattedDate}</span>
         </div>
         
         <div className="flex items-center text-sm text-neutral-600 mb-4">
@@ -165,7 +165,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
             size="icon"
             onClick={togglePlayback}
             className={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm transition-all ${
-              isPlaying ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'
+              isPlaying ? 'bg-amber-500 hover:bg-amber-600' : 'bg-primary hover:bg-primary/80'
             }`}
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
