@@ -16,10 +16,36 @@ interface RecordingCardProps {
 const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) => {
   const { toast } = useToast();
 
-  // Ensure we're using the full path
+  // Ensure we're using the full path and handle potential double slashes
   const fullPath = recording.audioUrl.startsWith('http') 
     ? recording.audioUrl 
-    : `${window.location.origin}${recording.audioUrl}`;
+    : `${window.location.origin}${recording.audioUrl.startsWith('/') ? '' : '/'}${recording.audioUrl}`;
+    
+  // For debugging
+  console.log('Full audio path:', fullPath);
+  
+  // Validate audio URL
+  const validateAudioUrl = async () => {
+    try {
+      const response = await fetch(fullPath, { method: 'HEAD' });
+      if (!response.ok) {
+        throw new Error('Audio file not found');
+      }
+      console.log('Audio file validated:', response.status);
+    } catch (error) {
+      console.error('Audio validation error:', error);
+      toast({
+        title: 'Lỗi kiểm tra file âm thanh',
+        description: 'Không thể truy cập file âm thanh',
+        variant: 'destructive'
+      });
+    }
+  };
+  
+  // Validate on mount
+  React.useEffect(() => {
+    validateAudioUrl();
+  }, [fullPath]);
 
   // For debugging
   console.log('Audio path:', fullPath);

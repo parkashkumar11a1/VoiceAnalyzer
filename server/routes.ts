@@ -70,6 +70,30 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API Routes
+  // Serve static files with proper MIME types
+  app.get("/uploads/:filename", (req, res, next) => {
+    const filename = req.params.filename;
+    const filePath = path.join(storage_dir, filename);
+    
+    // Set proper audio MIME type based on extension
+    if (filename.endsWith('.mp3')) {
+      res.set('Content-Type', 'audio/mpeg');
+    } else if (filename.endsWith('.wav')) {
+      res.set('Content-Type', 'audio/wav');
+    } else if (filename.endsWith('.ogg')) {
+      res.set('Content-Type', 'audio/ogg');
+    } else if (filename.endsWith('.webm')) {
+      res.set('Content-Type', 'audio/webm');
+    }
+    
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error('Error sending audio file:', err);
+        res.status(404).send('Audio file not found');
+      }
+    });
+  });
+
   app.get("/api/recordings", async (req, res) => {
     try {
       const recordings = await storage.getAllRecordings();

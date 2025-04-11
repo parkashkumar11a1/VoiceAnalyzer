@@ -68,18 +68,8 @@ const Home: React.FC = () => {
     setIsDeleteModalOpen(false);
     setRecordingToDelete(null);
   };
-  function playSound(url: string) {
-    var a = new Audio(url);
-    a.play();
-  }
-
-  let sound = new Audio(
-    "https://3210ec5c-a307-4833-ac77-74c455c80a3b-00-1fmjbs2dogzvc.worf.replit.dev/uploads/recording-1744346707213-624661289.mp3",
-  );
-  sound.onplay = () => {};
   return (
     <div className="min-h-screen flex flex-col bg-neutral-100">
-      <button onClick={() => sound.play()}>Play aaaass</button>
       <Header />
       <main className="flex-1 container mx-auto px-4 py-6">
         <RecordingSection
