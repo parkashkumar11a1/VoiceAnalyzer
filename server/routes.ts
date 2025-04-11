@@ -35,7 +35,7 @@ const upload = multer({
       } else if (file.mimetype === 'audio/wav' || file.mimetype === 'audio/x-wav' || file.mimetype === 'audio/wave') {
         extension = 'wav';
       } else if (file.mimetype === 'audio/mp4') {
-        extension = 'm4a';
+        extension = 'mp3'; // Use mp3 instead of mp4 for better compatibility
       }
       
       cb(null, `recording-${uniqueSuffix}.${extension}`);

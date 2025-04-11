@@ -27,9 +27,14 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
     const audio = new Audio(fullPath);
     audioRef.current = audio;
     
+    // Log the audio file information for debugging
+    console.log('Audio path:', fullPath);
+    
     // Handle audio loading errors
     audio.addEventListener('error', (e) => {
       console.error('Audio loading error:', e);
+      console.error('Audio error code:', audio.error ? audio.error.code : 'unknown');
+      console.error('Audio error message:', audio.error ? audio.error.message : 'unknown');
       toast({
         title: 'Lỗi phát âm thanh',
         description: 'Không thể tải file âm thanh. Trình duyệt có thể không hỗ trợ định dạng này.',
