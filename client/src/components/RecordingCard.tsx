@@ -174,7 +174,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
           
           <div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
             <div 
-              className="bg-cyan-500 h-full transition-all"
+              className="bg-primary h-full transition-all"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -190,7 +190,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
             variant="ghost"
             size="icon"
             onClick={downloadRecording}
-            className="p-2 text-neutral-600 hover:bg-neutral-100 rounded-full"
+            className="p-2 text-primary hover:bg-neutral-100 rounded-full"
             aria-label="Download"
           >
             <Download className="h-4 w-4" />
@@ -200,7 +200,7 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
             variant="ghost"
             size="icon"
             onClick={shareRecording}
-            className="p-2 text-neutral-600 hover:bg-neutral-100 rounded-full"
+            className="p-2 text-primary hover:bg-neutral-100 rounded-full"
             aria-label="Share"
           >
             <Share className="h-4 w-4" />

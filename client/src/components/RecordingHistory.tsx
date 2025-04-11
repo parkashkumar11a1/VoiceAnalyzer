@@ -93,14 +93,14 @@ const RecordingHistory: React.FC<RecordingHistoryProps> = ({
 
   return (
     <section>
-      <h2 className="text-xl font-medium mb-4 text-primary-700 font-heading">Danh sách ghi âm</h2>
+      <h2 className="text-xl font-medium mb-4 text-primary font-heading">Danh sách ghi âm</h2>
       
       {/* Filters */}
       <Card className="mb-4">
         <CardContent className="p-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center">
-              <label htmlFor="sortBy" className="mr-2 text-neutral-700">Sắp xếp:</label>
+              <label htmlFor="sortBy" className="mr-2 text-primary">Sắp xếp:</label>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-32 border border-neutral-300 rounded-md">
                   <SelectValue />
