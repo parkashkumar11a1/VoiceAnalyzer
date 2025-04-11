@@ -6,6 +6,7 @@ import { Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { formatTime } from '@/lib/utils/formatTime';
+import CustomAudioPlayer from './CustomAudioPlayer';
 
 interface RecordingCardProps {
   recording: Recording;
@@ -71,33 +72,12 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
 
         {/* Audio player */}
         <div className="mb-4">
-          <audio 
-            controls 
-            className="w-full" 
-            preload="metadata"
-            controlsList="nodownload"
-            onLoadStart={() => console.log('Audio loading started')}
-            onCanPlay={() => console.log('Audio can play')}
-            onError={(e) => {
-              const audio = e.currentTarget;
-              console.error('Audio error:', {
-                error: audio.error,
-                networkState: audio.networkState,
-                readyState: audio.readyState
-              });
-              toast({
-                title: 'Lỗi phát âm thanh',
-                description: 'Không thể phát file âm thanh. Vui lòng thử lại.',
-                variant: 'destructive',
-              });
-            }}
-          >
-            <source src={fullPath} type="audio/mpeg" />
-            <source src={fullPath} type="audio/mp3" />
-            <source src={fullPath} type="audio/wav" />
-            <source src={fullPath} type="audio/webm" />
-            Your browser does not support the audio element.
-          </audio>
+          <CustomAudioPlayer
+            src={fullPath}
+            duration={recording.duration}
+            filename={recording.filename}
+            title={recording.question}
+          />
         </div>
 
         {/* Action buttons */}
