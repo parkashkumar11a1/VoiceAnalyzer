@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Recording } from '@shared/schema';
 import { format } from 'date-fns';
-import { Trash, Download } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { formatTime } from '@/lib/utils/formatTime';
@@ -69,13 +69,22 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
           <span>{formatTime(recording.duration)}</span>
         </div>
         
-        {/* Standard HTML5 audio element */}
+        {/* Audio player */}
         <div className="mb-4">
-          <audio controls className="w-full" preload="metadata">
-            <source src={fullPath} type="audio/mpeg" />
-            <source src={fullPath} type="audio/mp3" />
-            <source src={fullPath} type="audio/wav" />
-            <source src={fullPath} type="audio/webm" />
+          <audio 
+            controls 
+            className="w-full" 
+            preload="metadata"
+            src={fullPath}
+            onError={(e) => {
+              console.error('Audio error:', e);
+              toast({
+                title: 'Lỗi phát âm thanh',
+                description: 'Không thể phát file âm thanh. Vui lòng thử lại.',
+                variant: 'destructive',
+              });
+            }}
+          >
             Your browser does not support the audio element.
           </audio>
         </div>
