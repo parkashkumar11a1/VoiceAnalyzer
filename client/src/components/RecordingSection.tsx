@@ -41,10 +41,10 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({ onRecordingSaved })
       
       // Try different MIME types based on browser support
       const mimeTypes = [
-        'audio/webm;codecs=opus',
         'audio/webm',
-        'audio/ogg;codecs=opus',
-        'audio/mp4',
+        'audio/mp3',
+        'audio/wav',
+        'audio/ogg',
         ''  // Default
       ];
       
