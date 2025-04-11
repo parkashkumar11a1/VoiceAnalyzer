@@ -20,8 +20,11 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Create audio element
-    const audio = new Audio(recording.audioUrl);
+    // Create audio element - ensure we're using the full path
+    const fullPath = recording.audioUrl.startsWith('http') 
+      ? recording.audioUrl 
+      : `${window.location.origin}${recording.audioUrl}`;
+    const audio = new Audio(fullPath);
     audioRef.current = audio;
     
     // Handle audio loading errors
@@ -92,8 +95,13 @@ const RecordingCard: React.FC<RecordingCardProps> = ({ recording, onDelete }) =>
   };
 
   const downloadRecording = () => {
+    // Ensure we use the full path for downloading
+    const fullPath = recording.audioUrl.startsWith('http') 
+      ? recording.audioUrl 
+      : `${window.location.origin}${recording.audioUrl}`;
+    
     const a = document.createElement('a');
-    a.href = recording.audioUrl;
+    a.href = fullPath;
     a.download = recording.filename || 'recording.webm';
     document.body.appendChild(a);
     a.click();

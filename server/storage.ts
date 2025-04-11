@@ -99,7 +99,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(recordings)
-      .orderBy(recordings.createdAt, { ascending: false });
+      .orderBy(recordings.createdAt, "desc");
   }
 
   async getRecording(id: number): Promise<Recording | undefined> {
