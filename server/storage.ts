@@ -1,4 +1,6 @@
 import { recordings, type Recording, type InsertRecording, users, type User, type InsertUser } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -72,4 +74,57 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Implement database storage
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  // Recording methods
+  async getAllRecordings(): Promise<Recording[]> {
+    return await db
+      .select()
+      .from(recordings)
+      .orderBy(recordings.createdAt, { ascending: false });
+  }
+
+  async getRecording(id: number): Promise<Recording | undefined> {
+    const [recording] = await db
+      .select()
+      .from(recordings)
+      .where(eq(recordings.id, id));
+    return recording || undefined;
+  }
+
+  async createRecording(insertRecording: InsertRecording): Promise<Recording> {
+    const [recording] = await db
+      .insert(recordings)
+      .values(insertRecording)
+      .returning();
+    return recording;
+  }
+
+  async deleteRecording(id: number): Promise<boolean> {
+    const result = await db
+      .delete(recordings)
+      .where(eq(recordings.id, id));
+    return true; // Postgres doesn't return affected rows easily, so assume success
+  }
+}
+
+// Use DatabaseStorage instead of MemStorage
+export const storage = new DatabaseStorage();

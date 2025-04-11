@@ -1,4 +1,5 @@
 import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -25,6 +26,10 @@ export const recordings = pgTable("recordings", {
   duration: integer("duration").notNull(), // duration in seconds
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const recordingsRelations = relations(recordings, ({ one }) => ({
+  // Có thể thêm quan hệ với user trong tương lai
+}));
 
 export const insertRecordingSchema = createInsertSchema(recordings).pick({
   question: true,
